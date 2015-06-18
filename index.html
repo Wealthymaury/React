@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Usando componentes React</title>
+	<link rel="stylesheet" href="styles/estilos.css">
+
+	<!-- 
+		Es necesario incluir las librerias de React.js 
+		La primera es la libreria como tal, y la otra es un interprete de JSX
+	-->
+	<script src="https://fb.me/react-0.13.3.min.js"></script>
+	<script src="https://fb.me/JSXTransformer-0.13.3.js"></script>
+</head>
+<body>
+	<!-- Para poder hacer el render de los componentes, 
+	     siempre debemos tener un contenedor donde colocarlos -->
+	<div id="user">
+		<!-- Plantilla basica que servira para crear el componente
+
+			<article class="User">
+				<img src="images/1.jpg" alt="" class="User-avatar">
+				<div class="User-description">
+					<p class="User-name">@wealthymaury</p>
+					<p>Ingeniero en informatica</p>
+				</div>
+			</article> 
+		-->
+	</div>
+
+	<!-- El lugar donde se colocara el codigo React tiene que tener este tipo -->
+	<script type="text/jsx">
+		// Escribiendo el primer componente, 
+		// debe igualarse React.createClass, 
+		// y dentro estaran todas sus propiedades
+		var User = React.createClass({
+			// Debes colocar en 'render' lo que quieras que aparezca en pantalla, 
+			// en este caso el codigo de mi plantilla, pero ojo, el cierre de todas las 
+			// etiquetas se vuelve obligatorio.... Ademas, para que funcione debes cambiar 
+			// el atributo 'class' que ya es parte de React, por className.
+
+			// Los eventos en react se declaran simple, ejemplo onClick,
+			// this es para hacer referencia a este objeto, seguido de el evento 
+
+			// Para ponerle datos al componente, los debemos llamar con {this.state.atributo},
+			// lo que automaticamente toma los datos del estado actual del componente
+
+			render : function(){
+				var image = 'images/' + this.state.avatar;
+				
+				return (
+					<article className="User" onClick={this.changeUser}>
+						<img src={image} alt="" className="User-avatar" />
+						<div className="User-description">
+							<p className="User-name">{this.state.username}</p>
+							<p>{this.state.description}</p>
+						</div>
+					</article> 
+				);
+			},
+			// Dentro de createClass yo tengo una funcion que me permite definir los datos
+			// con los que quiero que se cree el objeto, para este caso, tiene que retornar
+			// un JSON con los valores que le quiero poner al componente
+			getInitialState : function(){
+				return {
+					username 	: '@wealthymaury',
+					avatar 		: '1.jpg',
+					description : 'Web developer profesional',
+					step 		: '1',
+				};	
+			},
+			changeUser : function(){
+				// Si queremos cambiar el estado del componente debemos usar el metodo setState
+				if(this.state.step === '1'){
+					this.setState({
+						username 	: 'Mauricio Manjarrez',
+						avatar 		: '2.jpg',
+						description : 'Ingeniero en informatica',
+						step		: '2'
+					});
+				}else{
+					this.setState(this.getInitialState());
+				}
+			}
+		});
+
+		// Para poder hacer que el componente se ponga en pantalla debemos ejecutar:
+		// El primer parametro es el componente dentro de < />, y el segundo donde lo queremos poner
+		React.render( <User/>, document.getElementById('user') );
+
+	</script>
+</body>
+</html>
